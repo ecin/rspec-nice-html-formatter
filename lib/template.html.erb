@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @title %></title>
+    <style>
+      * {
+       font-family: "Helvetica Neue", sans-serif;
+       color: rgb(6, 7, 8);
+      }
+
+      body {
+        margin-top: 5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      ol {
+        list-style: none;
+        margin-bottom: 4em;
+      }
+
+      button {
+        font-weight: bold;
+        color: yellowgreen;
+        cursor: pointer;
+        border: 1px solid;
+        border-radius: 1em;
+        margin: 0 0.5em;
+      }
+
+      .count {
+        font-weight: 600;
+        font-size: 1.5em;
+        margin-bottom: 0.5em;
+      }
+
+      ol li {
+        padding-left: 1em;
+      }
+
+      #summary {
+        opacity: 0.5;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="summary">
+      <%= @summary.totals_line %> in <%= @summary.duration.round(2) %> seconds
+    </div>
+    <div id="results">
+      <ol>
+        <div class="count"><%= pluralize(@failed.length, "Test") %> Failed</div>
+        <% (@failed * 10).each do |failure| %>
+          <li class="rerun">
+          🔥<button>Copy</button><span class="path">bundle exec rspec <%= failure.example.rerun_argument * rand(3) %></span>
+          </li>
+        <% end %>
+      </ol>
+      <ol>
+        <div class="count"><%= pluralize(@pending.length, "Test") %> Pending</div>
+        <% @pending.each do |pending| %>
+          <li>☔️ &nbsp;<%= pending.example.full_description %></li>
+        <% end %>
+      </ol>
+      <ol>
+        <div class="count"><%= pluralize(@passed.length, "Test") %> Passed</div>
+        <% (@passed * 100).each do |success| %>
+          <li>🌈 &nbsp;<%= success.example.full_description %></li>
+        <% end %>
+      </ol>
+    </div>
+    <script>
+      var copy = function(element) {
+        var range = document.createRange();
+        range.selectNode(element);
+
+        document.getSelection().addRange(range);
+        document.execCommand("copy");
+      }
+
+      document.querySelectorAll(".rerun button").forEach(function(node) {
+        node.addEventListener("click", function() {
+          copy(node.parentNode.querySelector(".path"));
+        });
+      });
+    </script>
+  </body>
+</html>
