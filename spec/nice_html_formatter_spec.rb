@@ -1,8 +1,8 @@
 require "rspec"
 
-require "emoji_formatter"
+require "nice_html_formatter"
 
-RSpec.describe EmojiFormatter do
+RSpec.describe NiceHTMLFormatter do
 
   it "passes" do
     expect(true).to eql(true)

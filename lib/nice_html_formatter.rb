@@ -1,7 +1,7 @@
 require "erb"
 require "irb"
 
-class EmojiFormatter
+class NiceHTMLFormatter
   include ERB::Util
 
   RSpec::Core::Formatters.register self,
