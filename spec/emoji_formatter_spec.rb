@@ -12,6 +12,10 @@ RSpec.describe EmojiFormatter do
     expect(true).to eql(false)
   end
 
+  it "fails again" do
+    raise RuntimeError
+  end
+
   it "is pending"
 
   xit "is disabled" do

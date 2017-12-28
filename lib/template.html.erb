@@ -9,7 +9,7 @@
       }
 
       body {
-        margin-top: 5em;
+        margin-top: 4em;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -21,6 +21,20 @@
         margin-bottom: 4em;
       }
 
+      ol.backtrace {
+        margin-bottom: 0;
+        padding: 1em;
+      }
+
+      ol.backtrace li {
+        color: orangered;
+        line-height: 1.5em;
+      }
+
+      ol.backtrace li.exception {
+        font-weight: 600;
+      }
+
       button {
         font-weight: bold;
         color: yellowgreen;
@@ -28,6 +42,8 @@
         border: 1px solid;
         border-radius: 1em;
         margin: 0 0.5em;
+        position: relative;
+        top: -2px;
       }
 
       .count {
@@ -36,8 +52,24 @@
         margin-bottom: 0.5em;
       }
 
+      .count button {
+        position: relative;
+        top: -5px;
+      }
+
+      #copy-all {
+        opacity: 0;
+      }
+
       ol li {
         padding-left: 1em;
+      }
+
+      .path {
+        position: absolute;
+        top: -100em;
+        left: -100em;
+        opacity: 0;
       }
 
       #summary {
@@ -52,38 +84,63 @@
     </div>
     <div id="results">
       <ol>
-        <div class="count"><%= pluralize(@failed.length, "Test") %> Failed</div>
-        <% (@failed * 10).each do |failure| %>
+        <div class="count">
+          <%= pluralize(@failed.length, "Test") %> Failed
+          <button id="copy-all-button">Copy All</button>
+        </div>
+        <% @failed.each do |failure| %>
           <li class="rerun">
-          🔥<button>Copy</button><span class="path">bundle exec rspec <%= failure.example.rerun_argument * rand(3) %></span>
+          🔥<button>Copy</button><span><%= h failure.example.full_description %></span>
+          <span class="path">
+            bundle exec rspec <%= h failure.example.rerun_argument%>
+          </span>
+          <ol class="backtrace">
+            <li class="exception"><%= failure.exception %></li>
+            <% failure.formatted_backtrace.each do |line| %>
+              <li>
+                <%= h line %>
+              </li>
+            <% end %>
+          </ol>
           </li>
         <% end %>
       </ol>
       <ol>
         <div class="count"><%= pluralize(@pending.length, "Test") %> Pending</div>
         <% @pending.each do |pending| %>
-          <li>☔️ &nbsp;<%= pending.example.full_description %></li>
+          <li>☔️ &nbsp;<%= h pending.example.full_description %></li>
         <% end %>
       </ol>
       <ol>
         <div class="count"><%= pluralize(@passed.length, "Test") %> Passed</div>
-        <% (@passed * 100).each do |success| %>
-          <li>🌈 &nbsp;<%= success.example.full_description %></li>
+        <% @passed.each do |success| %>
+          <li>🌈 &nbsp;<%= h success.example.full_description %></li>
         <% end %>
       </ol>
+    </div>
+    <div id="copy-all">
+      bundle exec rspec <%= h @failed.map { |failure| failure.example.rerun_argument }.join(" ") %>
     </div>
     <script>
       var copy = function(element) {
         var range = document.createRange();
-        range.selectNode(element);
+        range.selectNodeContents(element);
 
-        document.getSelection().addRange(range);
+        var selection = document.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
         document.execCommand("copy");
       }
 
       document.querySelectorAll(".rerun button").forEach(function(node) {
         node.addEventListener("click", function() {
           copy(node.parentNode.querySelector(".path"));
+        });
+      });
+
+      document.querySelectorAll("#copy-all-button").forEach(function(node) {
+        node.addEventListener("click", function() {
+          copy(document.querySelector("#copy-all"));
         });
       });
     </script>

@@ -2,6 +2,8 @@ require "erb"
 require "irb"
 
 class EmojiFormatter
+  include ERB::Util
+
   RSpec::Core::Formatters.register self,
     :dump_failures,
     :dump_pending,
