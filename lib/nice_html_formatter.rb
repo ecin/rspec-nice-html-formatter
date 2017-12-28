@@ -1,7 +1,9 @@
 require "erb"
 require "irb"
 
-class EmojiFormatter
+class NiceHTMLFormatter
+  include ERB::Util
+
   RSpec::Core::Formatters.register self,
     :dump_failures,
     :dump_pending,
@@ -19,6 +21,8 @@ class EmojiFormatter
     @passed = []
     @failed = []
     @pending = []
+
+    @output = output
   end
 
   def example_started(notification)
@@ -54,12 +58,12 @@ class EmojiFormatter
   end
 
   def close(notification)
-    puts render!
+    @output << render
   end
 
   private
 
-  def render!
+  def render
     ERB.new(TEMPLATE).result(binding)
   end
 
