@@ -16,6 +16,10 @@ RSpec.describe NiceHTMLFormatter do
     raise RuntimeError
   end
 
+  it "looks nice even if it fails for a test with a really long description like this one, I mean, like a really reall long description, so long that I wonder just how many different context blocks the test went through before arriving at its final, clear assertion" do
+    fail
+  end
+
   it "is pending"
 
   xit "is disabled" do
