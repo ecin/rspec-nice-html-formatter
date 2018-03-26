@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rspec-nice-html-formatter (1.0)
+    rspec-nice-html-formatter (1.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -29,4 +29,4 @@ DEPENDENCIES
   rspec-nice-html-formatter!
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
