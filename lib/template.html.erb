@@ -72,6 +72,27 @@
         opacity: 0;
       }
 
+      .callstack {
+        display: none;
+      }
+
+      .expander {
+        cursor: pointer;
+        padding-left: 3px;
+      }
+
+      .backtrace .expander::after {
+        content: "▶️";
+      }
+
+      .backtrace.long .expander::after {
+        content: "🔽";
+      }
+
+      .backtrace.long .callstack {
+        display: block;
+      }
+
       #summary {
         opacity: 0.5;
         margin-bottom: 20px;
@@ -98,13 +119,15 @@
           <span class="path">
             bundle exec rspec <%= h failure.example.rerun_argument%>
           </span>
-          <ol class="backtrace">
-            <li class="exception"><%= failure.exception %></li>
-            <% failure.formatted_backtrace.each do |line| %>
-              <li>
-                <%= h line %>
-              </li>
-            <% end %>
+          <ol class="backtrace short">
+            <li class="exception"><%= failure.exception %> <span class="expander"></span></li>
+            <div class="callstack">
+              <% failure.formatted_backtrace.each do |line| %>
+                <li>
+                  <%= h line %>
+                </li>
+              <% end %>
+            </div>
           </ol>
           </li>
         <% end %>
@@ -145,6 +168,13 @@
       document.querySelectorAll("#copy-all-button").forEach(function(node) {
         node.addEventListener("click", function() {
           copy(document.querySelector("#copy-all"));
+        });
+      });
+
+      document.querySelectorAll(".backtrace .expander").forEach(function(node) {
+        node.addEventListener("click", function() {
+          var backtrace = node.parentNode.parentNode;
+          backtrace.classList.toggle("long");
         });
       });
     </script>
