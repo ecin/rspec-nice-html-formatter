@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "rspec-nice-html-formatter"
-  spec.version       = "1.0.1"
+  spec.version       = "1.0.2"
   spec.authors       = ["ecin"]
   spec.email         = ["ecin@copypastel.com"]
   spec.description   = "A nice HTML formatter for your RSpec tests 🌈"
