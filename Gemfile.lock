@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rspec-nice-html-formatter (1.0.2)
+    rspec-nice-html-formatter (1.0.3)
 
 GEM
   remote: http://rubygems.org/

@@ -120,7 +120,7 @@
             bundle exec rspec <%= h failure.example.rerun_argument%>
           </span>
           <ol class="backtrace short">
-            <li class="exception"><%= failure.exception %> <span class="expander"></span></li>
+            <li class="exception"><%= h failure.exception %> <span class="expander"></span></li>
             <div class="callstack">
               <% failure.formatted_backtrace.each do |line| %>
                 <li>
