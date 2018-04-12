@@ -20,6 +20,10 @@ RSpec.describe NiceHTMLFormatter do
     fail
   end
 
+  it "correctly escapes <script> tags" do
+    raise RuntimeError, "even when they're in an <error> message"
+  end
+
   it "is pending"
 
   xit "is disabled" do
